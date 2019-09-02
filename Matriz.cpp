@@ -13,6 +13,8 @@ Matriz::Matriz() {
 Matriz::Matriz(const std::string& orig) {
     try {
         Matriz();
+#pragma omp parallel
+                {
         std::string linea(orig.c_str());
         if (!linea.empty()) {
             // Quitamos caracters innecesarios
@@ -21,9 +23,8 @@ Matriz::Matriz(const std::string& orig) {
 
             // Obtenemos un token
             std::replace(linea.begin(), linea.end(), ';', ' ');
-            
-#pragma omp parallel
-        {
+
+
             std::vector<std::string> arreglo;
             std::stringstream ss(linea);
             std::string temp;
@@ -31,13 +32,10 @@ Matriz::Matriz(const std::string& orig) {
                 arreglo.push_back(temp);
             }
 
-           // std::vector<int>::size_type i = 0;
-        int dato = omp_get_max_threads();
+           std::vector<int>::size_type i = 0;
 
 #pragma omp parallel for private (i)
-for (int i =0; i < dato; i++){
-
-            for (int i = 0; i < LARGO; i++) {
+            for (i = 0; i < LARGO; i++) {
                 std::string fila = arreglo[i];
                 std::replace(fila.begin(), fila.end(), ',', ' ');
 
@@ -54,11 +52,10 @@ for (int i =0; i < dato; i++){
                     this->matriz[i][j] = numero;
                 }
             }
-}
- #pragma omp critical
+
  Matriz();
 
-        }           
+        }
         }
     } catch (...) {
         Matriz();
