@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -g3 -Wall -fopenmp -m64 -O3 -mtune=core2
 MKDIR = mkdir -p
 
-LIBS= -lm -fopenmp -fstream
+LIBS= -lm -fopenmp 
 
 directorios: 
 	$(MKDIR) build dist
